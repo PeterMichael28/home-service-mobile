@@ -8,6 +8,7 @@ import * as SecureStore from "expo-secure-store";
 import { useFonts } from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
 import TabNavigation from './app/Navigations/TabNavigation';
+import { useCallback } from 'react';
 
 const tokenCache = {
   async getToken(key) {
@@ -26,14 +27,26 @@ const tokenCache = {
   },
 };
  
-const [fontsLoaded, fontError] = useFonts({
-  'outfit': require('./assets/fonts/Outfit-Regular.ttf'),
-  'outfit-medium': require('./assets/fonts/Outfit-Medium.ttf'),
-  'outfit-bold': require('./assets/fonts/Outfit-Bold.ttf'),
-});
+
 
 
 export default function App() {
+  const [fontsLoaded, fontError] = useFonts({
+    'outfit': require('./assets/fonts/Outfit-Regular.ttf'),
+    'outfit-medium': require('./assets/fonts/Outfit-Medium.ttf'),
+    'outfit-bold': require('./assets/fonts/Outfit-Bold.ttf'),
+  });
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded || fontError) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded, fontError]);
+  
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
+
+
   return (
     <ClerkProvider publishableKey="pk_test_bHVja3ktaGVybWl0LTU3LmNsZXJrLmFjY291bnRzLmRldiQ"
     tokenCache={tokenCache}

@@ -43,7 +43,7 @@ export default function HomeHeader() {
 const styles = StyleSheet.create( {
     con: {
         padding: 20,
-        // paddingTop: 40,
+        paddingTop: 30,
         backgroundColor: colors.pry,
         borderBottomLeftRadius: 25,
         borderBottomRightRadius: 25
